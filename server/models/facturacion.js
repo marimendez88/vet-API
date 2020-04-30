@@ -8,11 +8,11 @@ let facturacionSchema = new Schema({
 		required: [true, "El monto es necesario"],
 	},
 	fecha: {
-		type: Date,
+		type: String,
 		required: [true, "La Fecha  es necesario"],
 	},
 	hora: {
-		type: Date,
+		type: String,
 	},
 	cliente: {
 		type: Schema.Types.ObjectId,

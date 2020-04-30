@@ -26,4 +26,9 @@ app.use(require("./vacuna"));
 //=========================
 app.use(require("./cita"));
 
+//=========================
+// Ruta Historial de facturacion
+//=========================
+app.use(require("./facturacion"));
+
 module.exports = app;
