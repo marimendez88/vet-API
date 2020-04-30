@@ -115,7 +115,7 @@ app.delete("/cliente/:id", function (req, res) {
 				return res.status(400).json({
 					ok: false,
 					err: {
-						message: "cliente no encontrado",
+						message: "Cliente no encontrado",
 					},
 				});
 			}
