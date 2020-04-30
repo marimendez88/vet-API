@@ -8,11 +8,11 @@ let citaSchema = new Schema({
 		required: [true, "El detalle es necesario"],
 	},
 	fecha: {
-		type: Date,
+		type: String,
 		required: [true, "La Fecha es necesario"],
 	},
 	hora: {
-		type: Date,
+		type: String,
 	},
 	veterinario: {
 		type: Schema.Types.ObjectId,

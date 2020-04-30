@@ -17,8 +17,13 @@ app.use(require("./mascota"));
 app.use(require("./veterinario"));
 
 //=========================
-// Ruta Vacuna
+// Ruta Historial de Vacunas
 //=========================
 app.use(require("./vacuna"));
+
+//=========================
+// Ruta Historial de Cita
+//=========================
+app.use(require("./cita"));
 
 module.exports = app;
