@@ -8,15 +8,15 @@ let vacunaSchema = new Schema({
 		required: [true, "El nombre de la vacuna es necesario"],
 	},
 	fecha: {
-		type: Date,
+		type: String,
 	},
 	hora: {
-		type: Date,
+		type: String,
 	},
 	mascota: {
 		type: Schema.Types.ObjectId,
 		ref: "Mascota",
-		required: [true, "La Mascota es necesario"],
+		required: [true, "La Mascota es necesaria"],
 	},
 	estado: {
 		type: Boolean,

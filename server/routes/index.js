@@ -16,4 +16,9 @@ app.use(require("./mascota"));
 //=========================
 app.use(require("./veterinario"));
 
+//=========================
+// Ruta Vacuna
+//=========================
+app.use(require("./vacuna"));
+
 module.exports = app;
