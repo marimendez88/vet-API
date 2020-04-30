@@ -3,13 +3,13 @@ const express = require("express");
 const _ = require("underscore");
 
 const app = express();
-const Cliente = require("../models/cliente");
+const Veterinario = require("../models/veterinario");
 
 //=========================
-//Muestra los clientes
+//Muestra los veterinarios
 //=========================
 
-app.get("/cliente", (req, res) => {
+app.get("/veterinario", (req, res) => {
 	let desde = req.query.desde || 0;
 	desde = Number(desde);
 
@@ -17,20 +17,20 @@ app.get("/cliente", (req, res) => {
 	limite = Number(limite);
 
 	//entre '' estan solo los campos que quiero mandar
-	Cliente.find({ estado: true })
+	Veterinario.find({ estado: true })
 		.skip(desde)
 		.limit(limite)
-		.exec((err, clientes) => {
+		.exec((err, veterinarios) => {
 			if (err) {
 				return res.status(400).json({
 					ok: false,
 					err,
 				});
 			}
-			Cliente.countDocuments({ estado: true }, (err, conteo) => {
+			Veterinario.countDocuments({ estado: true }, (err, conteo) => {
 				res.json({
 					ok: true,
-					clientes,
+					veterinarios,
 					cuantos: conteo,
 				});
 			});
@@ -38,19 +38,20 @@ app.get("/cliente", (req, res) => {
 });
 
 //=========================
-//Crea una cliente
+//Crea una veterinario
 //=========================
-app.post("/cliente", function (req, res) {
+app.post("/veterinario", function (req, res) {
 	let body = req.body;
 
-	let cliente = new Cliente({
+	let veterinario = new Veterinario({
 		nombre: body.nombre,
 		apellidos: body.apellidos,
 		email: body.email,
 		telefono: body.telefono,
+		especialidad: body.especialidad,
 	});
 
-	cliente.save((err, clienteDB) => {
+	veterinario.save((err, veterinarioDB) => {
 		if (err) {
 			return res.status(400).json({
 				ok: false,
@@ -59,23 +60,29 @@ app.post("/cliente", function (req, res) {
 		}
 		res.json({
 			ok: true,
-			cliente: clienteDB,
+			veterinario: veterinarioDB,
 		});
 	});
 });
 //=========================
-// Actualiza un cliente
+// Actualiza un veterinario
 //=========================
-app.put("/cliente/:id", function (req, res) {
+app.put("/veterinario/:id", function (req, res) {
 	let id = req.params.id;
 
-	let body = _.pick(req.body, ["nombre", "apellidos", "email", "telefono"]);
+	let body = _.pick(req.body, [
+		"nombre",
+		"apellidos",
+		"email",
+		"telefono",
+		"especialidad",
+	]);
 
-	Cliente.findByIdAndUpdate(
+	Veterinario.findByIdAndUpdate(
 		id,
 		body,
 		{ new: true, runValidators: true },
-		(err, clienteDB) => {
+		(err, veterinarioDB) => {
 			if (err) {
 				return res.status(400).json({
 					ok: false,
@@ -85,73 +92,73 @@ app.put("/cliente/:id", function (req, res) {
 
 			res.json({
 				ok: true,
-				cliente: clienteDB,
+				veterinario: veterinarioDB,
 			});
 		},
 	);
 });
 //=========================
-// Elimina un cliente
+// Elimina un veterinario
 //=========================
-app.delete("/cliente/:id", function (req, res) {
+app.delete("/veterinario/:id", function (req, res) {
 	let id = req.params.id;
 
 	let cambiaEstado = {
 		estado: false,
 	};
 
-	Cliente.findByIdAndUpdate(
+	Veterinario.findByIdAndUpdate(
 		id,
 		cambiaEstado,
 		{ new: true },
-		(err, clienteBorrado) => {
+		(err, veterinarioBorrado) => {
 			if (err) {
 				return res.status(400).json({
 					ok: false,
 					err,
 				});
 			}
-			if (!clienteBorrado) {
+			if (!veterinarioBorrado) {
 				return res.status(400).json({
 					ok: false,
 					err: {
-						message: "Cliente no encontrado",
+						message: "veterinario no encontrado",
 					},
 				});
 			}
 			res.json({
 				ok: true,
-				cliente: clienteBorrado,
+				veterinario: veterinarioBorrado,
 			});
 		},
 	);
 });
 
 //=========================
-//Obtener  cliente por id
+//Obtener  veterinario por id
 //=========================
-app.get("/cliente/:id", (req, res) => {
+app.get("/veterinario/:id", (req, res) => {
 	let id = req.params.id;
-	Cliente.findById(id, (err, clienteBD) => {
+	Veterinario.findById(id, (err, veterinarioBD) => {
 		if (err) {
 			return res.status(400).json({
 				ok: false,
 				err: {
-					message: "Error al buscar el cliente",
+					message: "Error al buscar el veterinario",
 				},
 			});
 		}
-		if (!clienteBD) {
+		if (!veterinarioBD) {
 			return res.status(400).json({
 				ok: false,
 				err: {
-					message: "cliente no encontrada",
+					message: "Veterinario no encontrado",
 				},
 			});
 		}
 		res.json({
 			ok: true,
-			cliente: clienteBD,
+			veterinario: veterinarioBD,
 		});
 	});
 });

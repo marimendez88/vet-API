@@ -11,4 +11,9 @@ app.use(require("./cliente"));
 //=========================
 app.use(require("./mascota"));
 
+//=========================
+// Ruta Veterinario
+//=========================
+app.use(require("./veterinario"));
+
 module.exports = app;
