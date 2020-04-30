@@ -15,6 +15,9 @@ app.use(express.static(publicPath));
 module.exports.io = socketIO(server);
 require("./sockets/socket");
 
+//Configuración global de rutas
+// app.use(require("./routes/index"));
+
 server.listen(port, (err) => {
 	if (err) throw new Error(err);
 
