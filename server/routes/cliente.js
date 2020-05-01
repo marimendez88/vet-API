@@ -4,6 +4,8 @@ const app = express();
 const { io } = require("../server");
 
 const Cliente = require("../models/cliente");
+const Facturacion = require("../models/facturacion");
+const Mascota = require("../models/mascota");
 
 //=========================
 //Muestra los clientes
@@ -13,7 +15,7 @@ app.get("/cliente", (req, res) => {
 	let desde = req.query.desde || 0;
 	desde = Number(desde);
 
-	let limite = req.query.limite || 5;
+	let limite = req.query.limite || 0;
 	limite = Number(limite);
 
 	//entre '' estan solo los campos que quiero mandar
@@ -152,11 +154,30 @@ app.get("/cliente/:id", (req, res) => {
 				},
 			});
 		}
-		res.json({
-			ok: true,
-			cliente: clienteBD,
+		Facturacion.find({ cliente: clienteBD.id }).exec((err, facturacion) => {
+			res.json({
+				ok: true,
+				cliente: clienteBD,
+				facturacion: facturacion,
+			});
 		});
 	});
 });
+
+2;
+3;
+4;
+5;
+6;
+7;
+8;
+9;
+// async function getClientes(req, res) {
+// 	const clientes = await Cliente.find().populate("mascota", "cliente");
+
+// 	clientes;
+// }
+
+// // getClientes();
 
 module.exports = app;

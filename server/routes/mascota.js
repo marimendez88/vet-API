@@ -5,6 +5,7 @@ const { io } = require("../server");
 
 const app = express();
 const Mascota = require("../models/mascota");
+const Vacuna = require("../models/vacuna");
 
 //=========================
 //Muestra los mascotas
@@ -46,7 +47,6 @@ app.get("/mascota", (req, res) => {
 
 app.get("/mascota/:id", (req, res) => {
 	let id = req.params.id;
-
 	Mascota.findById(id)
 		.populate("cliente", "nombre apellidos email telefono")
 		.exec((err, mascotaBD) => {
@@ -64,9 +64,12 @@ app.get("/mascota/:id", (req, res) => {
 					},
 				});
 			}
-			res.json({
-				ok: true,
-				mascota: mascotaBD,
+			Vacuna.find({ mascota: mascotaBD.id }).exec((err, vacuna) => {
+				res.json({
+					ok: true,
+					mascota: mascotaBD,
+					vacunas: vacuna,
+				});
 			});
 		});
 });
@@ -201,38 +204,6 @@ app.delete("/mascota/:id", function (req, res) {
 			});
 		},
 	);
-});
-
-//=========================
-//Obtener  mascota por id
-//=========================
-app.get("/mascota/:id", (req, res) => {
-	let id = req.params.id;
-	Mascota.findById(id, (err, mascotaBD) => {
-		if (err) {
-			return res.status(400).json({
-				ok: false,
-				err: {
-					message: "Error al buscar el mascota",
-				},
-			});
-		}
-		if (!mascotaBD) {
-			return res.status(400).json({
-				ok: false,
-				err: {
-					message: "mascota no encontrada",
-				},
-			});
-		}
-		res.json({
-			ok: true,
-			mascota: mascotaBD,
-		});
-	});
-	// .populate('suario', 'nombre email')
-	// .populate('categoria', 'descripcion');
-	//Populate:Usuario y categoria
 });
 
 module.exports = app;

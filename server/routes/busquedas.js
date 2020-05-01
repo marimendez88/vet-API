@@ -64,14 +64,9 @@ app.get("/buscar/:termino", (req, res) => {
 	});
 });
 
-const enviaRespuesta = (status, respuesta) => {
-	(req, res) => {
-		console.log(respuesta);
-		return res.json({
-			ok: status,
-			resultado: respuesta,
-		});
-	};
-};
+//=========================
+// Buscar el cliente por medio del id
+//=========================
+app.get("/buscar/cliente/:id", (req, res) => {});
 
 module.exports = app;
