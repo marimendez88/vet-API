@@ -1,32 +1,24 @@
-const { io } = require('../server');
+const { io } = require("../server");
+const socketIO = require("socket.io");
 
-io.on('connection', (client) => {
-    console.log('Usuario conectado');
+let online = 0;
 
-    client.emit('enviarMensaje', {
-        usuario: 'Administrador',
-        mensaje: 'Bienvenido a esta app'
-    });
+io.on("connection", (socketIO) => {
+	online++;
+	console.log(`socketIO ${socketIO.id} connected.`);
+	console.log(`Online: ${online}`);
+	io.emit("visitor enters", online);
 
-    client.on('disconnect', () => {
-        console.log('Usuario desconectado');
-    });
+	socketIO.on("add", (data) => socketIO.broadcast.emit("add", data));
+	socketIO.on("update", (data) => socketIO.broadcast.emit("update", data));
+	socketIO.on("delete", (data) => socketIO.broadcast.emit("delete", data));
 
-    //escuchar el cliente
-    client.on('enviarMensaje', (data, callback) => {
-        console.log(data);
-
-        client.broadcast.emit('enviarMensaje', data);
-        // if (mensaje.usuario) {
-        //     callback({
-        //         resp: 'Todo salio bien'
-        //     });
-        // } else {
-        //     callback({
-        //         resp: 'TODO SALIO MAL'
-        //     });
-        // }
-
-    });
-
+	socketIO.on("disconnect", () => {
+		online--;
+		console.log(`socketIO ${socketIO.id} disconnected.`);
+		console.log(`Online: ${online}`);
+		io.emit("visitor exits", online);
+	});
 });
+
+module.exports = {};

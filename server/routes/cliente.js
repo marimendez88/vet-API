@@ -1,8 +1,8 @@
 const express = require("express");
-
 const _ = require("underscore");
-
 const app = express();
+const { io } = require("../server");
+
 const Cliente = require("../models/cliente");
 
 //=========================
@@ -40,7 +40,7 @@ app.get("/cliente", (req, res) => {
 //=========================
 //Crea una cliente
 //=========================
-app.post("/cliente", function (req, res) {
+app.post("/cliente", (req, res) => {
 	let body = req.body;
 
 	let cliente = new Cliente({
@@ -57,6 +57,8 @@ app.post("/cliente", function (req, res) {
 				err,
 			});
 		}
+
+		io.emit("clienteNuevo", cliente);
 		res.json({
 			ok: true,
 			cliente: clienteDB,
@@ -82,7 +84,7 @@ app.put("/cliente/:id", function (req, res) {
 					err,
 				});
 			}
-
+			io.emit("clienteActualizado", clienteDB);
 			res.json({
 				ok: true,
 				cliente: clienteDB,
@@ -119,6 +121,7 @@ app.delete("/cliente/:id", function (req, res) {
 					},
 				});
 			}
+			io.emit("clienteEliminado", clienteBorrado);
 			res.json({
 				ok: true,
 				cliente: clienteBorrado,

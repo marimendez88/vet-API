@@ -19,3 +19,21 @@ URL Produccion
 ```
 https://mjmendez-vet-api.herokuapp.com/
 ```
+
+#SOCKETS
+Para escuchar informacion desde el servidor, en index.html
+
+---> sockets.on("")
+
+Cliente
+Nuevo Cliente: "clienteNuevo"
+
+Actualiza Cliente: "clienteActualizado"
+
+Elimina Cliente: "clienteEliminado"
+
+Nueva Mascota: "mascotaNuevo"
+
+Actualiza Mascota: "mascotaActualizado"
+
+Elimina Mascota:"mascotaEliminado"

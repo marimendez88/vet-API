@@ -1,6 +1,7 @@
 const express = require("express");
 
 const _ = require("underscore");
+const { io } = require("../server");
 
 const app = express();
 const Mascota = require("../models/mascota");
@@ -128,6 +129,7 @@ app.post("/mascota", function (req, res) {
 				err,
 			});
 		}
+		io.emit("mascotaNuevo", mascota);
 		res.json({
 			ok: true,
 			mascota: mascotaDB,
@@ -154,7 +156,7 @@ app.put("/mascota/:id", function (req, res) {
 					err,
 				});
 			}
-
+			io.emit("mascotaActualizado", mascotaDB);
 			res.json({
 				ok: true,
 				mascota: mascotaDB,
@@ -192,6 +194,7 @@ app.delete("/mascota/:id", function (req, res) {
 					},
 				});
 			}
+			io.emit("mascotaEliminado", mascotaBorrado);
 			res.json({
 				ok: true,
 				mascota: mascotaBorrado,
