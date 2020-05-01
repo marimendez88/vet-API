@@ -31,4 +31,9 @@ app.use(require("./cita"));
 //=========================
 app.use(require("./facturacion"));
 
+//=========================
+// Ruta Busquedas de especiales
+//=========================
+app.use(require("./busquedas"));
+
 module.exports = app;
